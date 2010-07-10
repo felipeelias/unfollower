@@ -8,8 +8,11 @@ oauth = Twitter::OAuth.new(config['token'], config['secret'])
 
 if config['atoken'] && config['asecret']
   oauth.authorize_from_access(config['atoken'], config['asecret'])
-  twitter = Twitter::Base.new(oauth)
-  pp twitter.friends.map { |friend| friend.screen_name }.join(', ')
+  client = Twitter::Base.new(oauth)
+
+  # dump users_ids
+  follower_ids = client.follower_ids
+  File.open("dump/#{DateTime.now.to_s.gsub(/[-:T]/,'')}.yml", 'w') { |f| f.write(YAML.dump(follower_ids)) }
 
 elsif config['rtoken'] && config['rsecret'] && config['pin']
   oauth.authorize_from_request(config['rtoken'], config['rsecret'], config['pin'])
