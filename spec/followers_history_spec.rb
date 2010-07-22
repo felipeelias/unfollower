@@ -12,11 +12,12 @@ describe FollowersHistory do
       subject.date.should == "20101122"
     end
   end
-  
-  it "should show the ids of the unfollowers" do
-    old_history = FollowersHistory.new(:date => "20101122", :followers => [111, 222, 333])
-    new_history = FollowersHistory.new(:date => "20101123", :followers => [111])
-    
-    new_history.diff(old_history).should == [222, 333]
+  describe "comparing histories" do
+    let(:old_history) { FollowersHistory.new(:date => "20101122", :followers => [111, 222, 333]) }
+    let(:new_history) { FollowersHistory.new(:date => "20101123", :followers => [111]) }
+
+    it "should show the ids of the unfollowers" do
+      new_history.diff(old_history).should == [222, 333]
+    end
   end
 end
