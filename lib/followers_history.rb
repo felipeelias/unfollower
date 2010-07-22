@@ -8,4 +8,8 @@ class FollowersHistory
   def initialize(opts)
     @date, @followers = opts[:date], opts[:followers]
   end
+  
+  def diff(another)
+    another.followers - followers
+  end
 end
