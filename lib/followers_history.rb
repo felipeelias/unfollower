@@ -12,4 +12,8 @@ class FollowersHistory
   def diff(another)
     another.followers - followers
   end
+  
+  def ==(another)
+    another.followers == followers
+  end
 end

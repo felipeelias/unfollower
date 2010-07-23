@@ -5,6 +5,7 @@ describe FollowersHistory, ".new" do
   
   it "should have followers" do
     subject.should have(2).followers
+    subject.followers.should include(111, 222)
   end
 end
   
@@ -17,8 +18,7 @@ describe FollowersHistory, "comparing histories" do
   end
   
   it "should compare 2 histories" do
-    pending
-    # same_history = FollowersHistory.new([111, 222, 333])
-    # new_history.should == same_history
+    same_history = FollowersHistory.new([111, 222, 333])
+    old_history.should == same_history
   end
 end
