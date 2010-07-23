@@ -23,6 +23,13 @@ describe FollowersHistory, "comparing histories" do
   end
 end
 
+#TODO: refactor this fuck
 describe FollowersHistory, "loading all history" do
-  it "should load history from yaml file"
+  it "should load history from yaml file" do
+    raw_yaml = "--- \n- - 1\n  - 2\n- - 2\n  - 3\n"
+    File.should_receive(:open).with(File.expand_path(FollowersHistory::YAML_DUMP_FILE)).and_return(raw_yaml)
+    YAML.should_receive(:load).with(raw_yaml).and_return([[1, 2], [2, 3]])
+    
+    FollowersHistory.all.should include([1, 2], [2, 3])
+  end
 end
