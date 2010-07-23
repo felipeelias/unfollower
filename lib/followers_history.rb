@@ -21,6 +21,6 @@ class FollowersHistory
   end
   
   def self.all
-    YAML.load(File.open(File.expand_path(YAML_DUMP_FILE)))
+    YAML.load(open(File.expand_path(YAML_DUMP_FILE)))
   end
 end
