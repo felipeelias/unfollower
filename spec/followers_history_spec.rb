@@ -22,3 +22,7 @@ describe FollowersHistory, "comparing histories" do
     old_history.should == same_history
   end
 end
+
+describe FollowersHistory, "loading all history" do
+  it "should load history from yaml file"
+end
