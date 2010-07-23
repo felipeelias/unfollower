@@ -3,10 +3,10 @@
 # FollowersHistory.new(date, followers)
 # FollowersHistory.new.diff another
 class FollowersHistory
-  attr_reader :date, :followers
+  attr_reader :followers
   
-  def initialize(opts)
-    @date, @followers = opts[:date], opts[:followers]
+  def initialize(followers)
+    @followers = followers
   end
   
   def diff(another)

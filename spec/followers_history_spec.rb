@@ -1,23 +1,24 @@
 require 'lib/followers_history'
 
-describe FollowersHistory do
-  describe "creating a new FollowersHistory" do
-    subject { FollowersHistory.new(:date => "20101122", :followers => [111, 222]) }
-    
-    it "should have followers" do
-      subject.followers.should == [111, 222]
-    end
-    
-    it "should have a date identifier" do
-      subject.date.should == "20101122"
-    end
+describe FollowersHistory, ".new" do
+  subject { FollowersHistory.new([111, 222]) }
+  
+  it "should have followers" do
+    subject.should have(2).followers
   end
-  describe "comparing histories" do
-    let(:old_history) { FollowersHistory.new(:date => "20101122", :followers => [111, 222, 333]) }
-    let(:new_history) { FollowersHistory.new(:date => "20101123", :followers => [111]) }
+end
+  
+describe FollowersHistory, "comparing histories" do
+  let(:old_history) { FollowersHistory.new([111, 222, 333]) }
+  let(:new_history) { FollowersHistory.new([111]) }
 
-    it "should show the ids of the unfollowers" do
-      new_history.diff(old_history).should == [222, 333]
-    end
+  it "should show the ids of the unfollowers" do
+    new_history.diff(old_history).should == [222, 333]
+  end
+  
+  it "should compare 2 histories" do
+    pending
+    # same_history = FollowersHistory.new([111, 222, 333])
+    # new_history.should == same_history
   end
 end
