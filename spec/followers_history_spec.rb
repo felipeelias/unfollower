@@ -1,4 +1,4 @@
-require 'lib/followers_history'
+require 'spec_helper'
 
 describe FollowersHistory, ".new" do
   subject { FollowersHistory.new([111, 222]) }
@@ -25,7 +25,7 @@ end
 
 describe FollowersHistory, "loading all history" do
   before do
-    path = FollowersHistory::YAML_DUMP_FILE = File.expand_path("spec/fixtures/simple_dump.yml")
+    path = FollowersHistory::YAML_DUMP_FILE = ROOT + "/spec/fixtures/simple_dump.yml"
     raw_yaml = File.read(path)
     
     FollowersHistory.should_receive(:open).with(path).and_return(raw_yaml)
