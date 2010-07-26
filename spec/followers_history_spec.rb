@@ -20,14 +20,3 @@ describe FollowersHistory, "comparing histories" do
     old_history.should == same_history
   end
 end
-
-# describe FollowersHistory, "loading all history" do
-#   use_fixture :simple_dump
-#   
-#   it "should load history" do
-#     history = FollowersHistory.all
-# 
-#     history.first.followers.should == [1, 2]
-#     history.last.followers.should == [2, 3]
-#   end
-# end
