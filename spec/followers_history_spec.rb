@@ -24,14 +24,6 @@ describe FollowersHistory, "comparing histories" do
 end
 
 describe FollowersHistory, "loading all history" do
-  before do
-    FollowersHistory.db_file = ROOT + "/spec/fixtures/simple_dump.yml"
-  end
-  
-  after do
-    FollowersHistory.db_file = DB_FILE
-  end
-  
   it "should load history from yaml file" do
     FollowersHistory.all.should include([1, 2], [2, 3])
   end
