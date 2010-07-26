@@ -8,6 +8,6 @@ Spec::Runner.configure do |config|
   end
   
   def fixture_path_for(fixture_name)
-    "#{ROOT}/spec/fixtures/#{fixture_name}.yml"
+    "#{Application.root}/spec/fixtures/#{fixture_name}.yml"
   end
 end
