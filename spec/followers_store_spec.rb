@@ -1,7 +1,7 @@
 require 'spec_helper'
 
-describe "FollowersStore" do
-  it "should have path to db file" do
-    FollowersStore.instance.db_file.should == DB_FILE
-  end
+describe FollowersStore do
+  it "should add a new follower"
+  it "should load all followers from file"
+  it "should dump the followers"
 end
