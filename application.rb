@@ -4,7 +4,7 @@ require 'twitter'
 require 'lib/initializer'
 require 'helpers/config_store'
 
-store = FollowersStore.new("#{ROOT}/db/followers.yaml")
+store = FollowersStore.new(DB_FILE)
 config = ConfigStore.new("twitter.yml")
 oauth = Twitter::OAuth.new(config['token'], config['secret'])
 
