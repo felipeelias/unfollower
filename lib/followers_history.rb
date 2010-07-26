@@ -1,11 +1,4 @@
-require 'yaml'
-# TODO: possible methods
-# FollowersHistory.all (loads all files from dump ordered by date desc)
-# FollowersHistory.new(date, followers)
-# FollowersHistory.new.diff another
 class FollowersHistory
-  @@db_file = DB_FILE
-  
   attr_reader :followers
   
   def initialize(followers)
@@ -22,17 +15,15 @@ class FollowersHistory
   
   class << self
     def all
-      YAML.load(File.read(db_file)).map do |history|
-        FollowersHistory.new(history)
-      end
+      store.followers
     end
     
-    def db_file
-      @@db_file
+    def store
+      @@store ||= FollowersStore.new(DB_FILE)
     end
     
-    def db_file=(path)
-      @@db_file = path
+    def store=(follower_store)
+      @@store = follower_store
     end
   end
 end

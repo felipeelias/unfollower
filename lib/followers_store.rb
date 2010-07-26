@@ -1,3 +1,5 @@
+require 'yaml'
+
 class FollowersStore
   attr_reader :followers
   

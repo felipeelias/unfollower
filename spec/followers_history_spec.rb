@@ -24,12 +24,15 @@ describe FollowersHistory, "comparing histories" do
 end
 
 describe FollowersHistory, "loading all history" do
-  use_fixture :simple_dump
-  
   it "should load history from yaml file" do
+    FollowersHistory.store = FollowersStore.new("#{ROOT}/spec/fixtures/simple_dump.yml")
     history = FollowersHistory.all
 
     history.first.followers.should == [1, 2]
     history.last.followers.should == [2, 3]
   end
+end
+
+describe FollowersHistory, "saving a new instance" do
+  it "should add a new history if different"
 end
