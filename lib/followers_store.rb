@@ -28,8 +28,13 @@ class FollowersStore
   private
   
   def load
-    @followers = YAML.load(File.read(@file)).map do |history|
-      FollowersHistory.new(history)
+    @followers = []
+    yaml = YAML.load(File.read(@file))
+    
+    if yaml
+      @followers = yaml.map do |history|
+        FollowersHistory.new(history)
+      end      
     end
   end
   

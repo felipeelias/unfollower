@@ -31,3 +31,21 @@ describe FollowersStore do
     followers_to_array.first.should be_an_instance_of(Array)
   end
 end
+
+describe FollowersStore, "with an empty file" do
+  let(:path) { "#{ROOT}/spec/fixtures/empty_dump.yml" }
+  
+  before do
+    File.open(path, "w").close
+  end
+  
+  after do
+    File.delete(path)
+  end
+
+  it "should create an empty array" do
+    store = FollowersStore.new(path)
+    
+    store.followers.should == []
+  end
+end
