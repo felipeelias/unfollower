@@ -32,17 +32,9 @@ describe FollowersStore do
   end
 end
 
-describe FollowersStore, "with an empty file" do
+describe FollowersStore, "with an empty and nonexistent file" do
   let(:path) { "#{ROOT}/spec/fixtures/empty_dump.yml" }
   
-  before do
-    File.open(path, "w").close
-  end
-  
-  after do
-    File.delete(path)
-  end
-
   it "should create an empty array" do
     store = FollowersStore.new(path)
     

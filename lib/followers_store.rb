@@ -29,7 +29,8 @@ class FollowersStore
   
   def load
     @followers = []
-    yaml = YAML.load(File.read(@file))
+    file = File.new(@file) rescue ""
+    yaml = YAML.load(file)
     
     if yaml
       @followers = yaml.map do |history|
