@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe FollowersStore do
-  subject { FollowersStore.new("#{ROOT}/spec/fixtures/simple_dump.yml") }
+  subject { FollowersStore.new(fixture_path_for(:simple_dump)) }
   
   it do
     should have(2).followers
@@ -20,7 +20,7 @@ describe FollowersStore do
   end
   
   it "should dump correctly the followers" do
-    File.should_receive(:open).with("#{ROOT}/spec/fixtures/simple_dump.yml", "w")
+    File.should_receive(:open).with(fixture_path_for(:simple_dump), "w")
     subject.should_receive(:load)
     subject.dump!
   end
@@ -33,10 +33,8 @@ describe FollowersStore do
 end
 
 describe FollowersStore, "with an empty and nonexistent file" do
-  let(:path) { "#{ROOT}/spec/fixtures/empty_dump.yml" }
-  
   it "should create an empty array" do
-    store = FollowersStore.new(path)
+    store = FollowersStore.new(fixture_path_for(:empty_dump))
     
     store.followers.should == []
   end

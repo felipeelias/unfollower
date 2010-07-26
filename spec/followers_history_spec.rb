@@ -27,9 +27,7 @@ describe FollowersHistory, "comparing histories" do
 end
 
 describe FollowersHistory, "loading all history" do
-  before do
-    FollowersHistory.store = FollowersStore.new("#{ROOT}/spec/fixtures/simple_dump.yml")
-  end
+  use_fixture :simple_dump
   
   it "should load history" do
     history = FollowersHistory.all
@@ -40,9 +38,7 @@ describe FollowersHistory, "loading all history" do
 end
 
 describe FollowersHistory, "saving a new history" do
-  before do
-    FollowersHistory.store = FollowersStore.new("#{ROOT}/spec/fixtures/save_dump.yml")
-  end
+  use_fixture :save_dump
   
   it "should add a new history if different"
 end
