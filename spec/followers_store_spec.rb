@@ -12,6 +12,12 @@ describe FollowersStore do
     
     expect { subject.add follower }.to change { subject.count }.from(2).to(3)
   end
+
+  it "should not add a new follower if is the same as last history" do
+    follower = FollowersHistory.new([2, 3])
+    
+    lambda { subject.add follower }.should_not change { subject.count }
+  end
   
   it "should load all followers from file" do
     followers = subject.followers

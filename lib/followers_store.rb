@@ -9,7 +9,9 @@ class FollowersStore
   end
   
   def add(follower)
-    @followers << follower
+    if @followers.last && @followers.last != follower
+      @followers << follower
+    end
   end
   
   def count

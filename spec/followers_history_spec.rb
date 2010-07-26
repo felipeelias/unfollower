@@ -36,9 +36,3 @@ describe FollowersHistory, "loading all history" do
     history.last.followers.should == [2, 3]
   end
 end
-
-describe FollowersHistory, "saving a new history" do
-  use_fixture :save_dump
-  
-  it "should add a new history if different"
-end
