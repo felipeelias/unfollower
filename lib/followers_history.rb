@@ -22,7 +22,9 @@ class FollowersHistory
   
   class << self
     def all
-      YAML.load(open(File.expand_path(db_file)))
+      YAML.load(File.read(db_file)).map do |history|
+        FollowersHistory.new(history)
+      end
     end
     
     def db_file
