@@ -12,18 +12,4 @@ class FollowersHistory
   def ==(another)
     another.followers == followers
   end
-  
-  class << self
-    def all
-      store.followers
-    end
-    
-    def store
-      @@store ||= FollowersStore.new(DB_FILE)
-    end
-    
-    def store=(follower_store)
-      @@store = follower_store
-    end
-  end
 end

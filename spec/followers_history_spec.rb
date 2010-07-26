@@ -3,13 +3,8 @@ require 'spec_helper'
 describe FollowersHistory, ".new" do
   subject { FollowersHistory.new([111, 222]) }
   
-  it do
-    subject.should have(2).followers
-  end
-  
-  it do
-    subject.followers.should include(111, 222)
-  end
+  it { subject.should have(2).followers }
+  it { subject.followers.should include(111, 222) }
 end
   
 describe FollowersHistory, "comparing histories" do
@@ -26,13 +21,13 @@ describe FollowersHistory, "comparing histories" do
   end
 end
 
-describe FollowersHistory, "loading all history" do
-  use_fixture :simple_dump
-  
-  it "should load history" do
-    history = FollowersHistory.all
-
-    history.first.followers.should == [1, 2]
-    history.last.followers.should == [2, 3]
-  end
-end
+# describe FollowersHistory, "loading all history" do
+#   use_fixture :simple_dump
+#   
+#   it "should load history" do
+#     history = FollowersHistory.all
+# 
+#     history.first.followers.should == [1, 2]
+#     history.last.followers.should == [2, 3]
+#   end
+# end
