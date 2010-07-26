@@ -24,6 +24,8 @@ describe FollowersHistory, "comparing histories" do
 end
 
 describe FollowersHistory, "loading all history" do
+  use_fixture :simple_dump
+  
   it "should load history from yaml file" do
     FollowersHistory.all.should include([1, 2], [2, 3])
   end
