@@ -4,7 +4,7 @@ require 'yaml'
 # FollowersHistory.new(date, followers)
 # FollowersHistory.new.diff another
 class FollowersHistory
-  YAML_DUMP_FILE = "dump/history.yaml"
+  @@db_file = DB_FILE
   
   attr_reader :followers
   
@@ -20,7 +20,17 @@ class FollowersHistory
     another.followers == followers
   end
   
-  def self.all
-    YAML.load(open(File.expand_path(YAML_DUMP_FILE)))
+  class << self
+    def all
+      YAML.load(open(File.expand_path(db_file)))
+    end
+    
+    def db_file
+      @@db_file
+    end
+    
+    def db_file=(path)
+      @@db_file = path
+    end
   end
 end

@@ -25,10 +25,11 @@ end
 
 describe FollowersHistory, "loading all history" do
   before do
-    path = FollowersHistory::YAML_DUMP_FILE = ROOT + "/spec/fixtures/simple_dump.yml"
-    raw_yaml = File.read(path)
-    
-    FollowersHistory.should_receive(:open).with(path).and_return(raw_yaml)
+    FollowersHistory.db_file = ROOT + "/spec/fixtures/simple_dump.yml"
+  end
+  
+  after do
+    FollowersHistory.db_file = DB_FILE
   end
   
   it "should load history from yaml file" do
