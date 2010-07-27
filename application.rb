@@ -30,7 +30,6 @@ get '/update' do
     puts followers_history.inspect
 
     store.add(followers_history)    
-    store.dump!
     
     redirect '/'
   rescue => @e
