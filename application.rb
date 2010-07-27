@@ -1,12 +1,17 @@
 require 'rubygems'
 require 'sinatra'
 require 'twitter'
+require 'active_support/core_ext/string/output_safety'
 require 'lib/initializer'
 require 'helpers/config_store'
 
 store = FollowersStore.new
 config = ConfigStore.new("twitter.yml")
 oauth = Twitter::OAuth.new(config['token'], config['secret'])
+
+def h(string)
+  ERB::Util.html_escape(string)
+end
 
 get '/' do
   @followers = store.histories
@@ -50,12 +55,12 @@ __END__
 <h3>Total of <%= @followers.count %> alteration(s)</h3>
 <ul>
 <% @followers.each do |follower| %>
-  <li><%= follower.followers.inspect %></li>
+  <li><%=h follower.followers.inspect %></li>
 <% end %>
 </ul>
 
 @@ error
 <h2>error happens</h2>
 <pre>
-  <%=h @e.inspect %>
+  <%=h @e %>
 </pre>
