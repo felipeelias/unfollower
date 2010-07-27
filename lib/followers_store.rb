@@ -1,44 +1,50 @@
 require 'yaml'
 
 class FollowersStore
-  attr_reader :followers
-  
-  def initialize(file)
-    @file = file
-    load
+
+  def initialize
+    @file = Application.db_root
   end
   
   def add(follower)
-    if @followers.last && @followers.last != follower
-      @followers << follower
-    end
+    @histories << follower if histories.last != follower
+    save_to_file!
+  end
+  
+  def histories
+    @histories ||= load_from_file
   end
   
   def count
-    @followers.size
-  end
-  
-  def dump!
-    File.open(@file, "w") { |f| f.write(to_array) }
-    load
+    histories.size
   end
   
   def to_array
-    @followers.map {|follower| follower.followers }
+    histories.map { |history| history.followers }
   end
   
   private
   
-  def load
-    @followers = []
-    file = File.new(@file) rescue ""
-    yaml = YAML.load(file)
-    
-    if yaml
-      @followers = yaml.map do |history|
-        FollowersHistory.new(history)
-      end      
+    def save_to_file!
+      File.open(@file, "w") { |f| f.write(YAML.dump(to_array)) }
+      reload_from_file
     end
-  end
+  
+    def load_from_file
+      histories_from_db = []
+      file = File.new(@file) rescue ""
+      yaml = YAML.load(file)
+    
+      if yaml
+        histories_from_db = yaml.map do |history|
+          FollowersHistory.new(history)
+        end
+      end
+      histories_from_db
+    end
+  
+    def reload_from_file
+      @histories = load_from_file
+    end
   
 end
