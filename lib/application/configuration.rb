@@ -1,3 +1,5 @@
+require 'pathname'
+
 module Application
   @@environment = 'development'
   
