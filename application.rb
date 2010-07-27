@@ -4,12 +4,12 @@ require 'twitter'
 require 'lib/initializer'
 require 'helpers/config_store'
 
-store = FollowersStore.new(DB_FILE)
+store = FollowersStore.new
 config = ConfigStore.new("twitter.yml")
 oauth = Twitter::OAuth.new(config['token'], config['secret'])
 
 get '/' do
-  @followers = store.followers
+  @followers = store.histories
   erb :index
 end
 
@@ -28,8 +28,7 @@ get '/update' do
     store.dump!
     
     redirect '/'
-  rescue => e
-    @e = e
+  rescue => @e
     erb :error
   end
 end
@@ -48,14 +47,15 @@ __END__
 @@ index
 <h1 id="hello">Your unfollowers</h1>
 <a href="/update">Update the unfollowers list</a>
+<h3>Total of <%= @followers.count %> alteration(s)</h3>
 <ul>
 <% @followers.each do |follower| %>
-  <li><%= follower.inspect %></li>
+  <li><%= follower.followers.inspect %></li>
 <% end %>
 </ul>
 
 @@ error
 <h2>error happens</h2>
 <pre>
-  <%= @e.inspect %>
+  <%=h @e.inspect %>
 </pre>
