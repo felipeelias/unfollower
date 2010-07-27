@@ -1,2 +1,2 @@
-require 'application/configuration'
-require 'application/test_helpers'
+require 'lib/application/configuration'
+require 'lib/application/test_helpers'
