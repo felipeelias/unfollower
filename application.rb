@@ -25,15 +25,6 @@ def h(string)
   ERB::Util.html_escape(string)
 end
 
-get '/timeline' do
-  if @client
-    @timeline = @client.user_timeline.map { |status| status.text }
-    erb :timeline
-  else
-    erb :auth
-  end
-end
-
 get '/request' do
   @request_token = @oauth.request_token(:oauth_callback => config.callback)
   session[:oauth][:request_token] = @request_token.token
@@ -52,12 +43,12 @@ get '/auth' do
   session[:oauth][:access_token] = @oauth.access_token.token
   session[:oauth][:access_token_secret] = @oauth.access_token.secret
 
-  redirect "/timeline"
+  redirect "/"
 end
 
 get '/logout' do
   session[:oauth] = {}
-  redirect '/timeline'
+  redirect '/'
 end
 
 get '/' do
