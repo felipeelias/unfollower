@@ -3,6 +3,10 @@ development:
   consumer_token: 
   consumer_secret: 
   oauth_callback: 
+test:
+  consumer_token: TEST_TOKEN
+  consumer_secret: TEST_SECRET
+  oauth_callback: http://test_callback
 production:
   consumer_token: 
   consumer_secret: 
