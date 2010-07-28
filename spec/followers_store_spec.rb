@@ -27,6 +27,13 @@ describe FollowersStore do
     lambda { subject.add follower }.should_not change { subject.count }
   end
   
+  it "should return an array of all unfollowers" do
+    subject.add FollowersHistory.new([3, 4])
+    unfollowers = subject.unfollowers
+
+    unfollowers.should == [1, 2]
+  end
+  
   it "should convert to array" do
     followers_to_array = subject.to_array
     followers_to_array.should be_an_instance_of(Array)

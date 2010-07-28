@@ -23,6 +23,17 @@ class FollowersStore
     histories.map { |history| history.followers }
   end
   
+  def unfollowers
+    list_of_unfollowers = []
+    histories.each_with_index do |follower, index|
+      if histories[index + 1]
+        diff = histories[index + 1].diff(follower)
+        list_of_unfollowers << diff if diff
+      end
+    end
+    list_of_unfollowers.flatten
+  end
+  
   private
   
     def save_to_file!
