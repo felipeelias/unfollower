@@ -1,11 +1,15 @@
 require 'spec_helper'
 
+shared_examples_for 'twitter config' do
+  it { should respond_to(:token) }
+  it { should respond_to(:secret) }
+  it { should respond_to(:callback) }  
+end
+
 describe Application::TwitterConfig do
   subject { Application::TwitterConfig.new("#{Application.root}/spec/fixtures/sample_twitter_config.yml") }
   
-  it { should respond_to(:token) }
-  it { should respond_to(:secret) }
-  it { should respond_to(:callback) }
+  it_should_behave_like "twitter config"
   
   context "in default environment" do
     it "should have development token" do
@@ -24,6 +28,8 @@ end
 
 describe Application::TwitterConfig, "in another environment" do
   subject { Application::TwitterConfig.new("#{Application.root}/spec/fixtures/sample_twitter_config.yml", 'production') }
+
+  it_should_behave_like "twitter config"
 
   it "should have production token" do
     subject.token == "PROD_TOKEN"
