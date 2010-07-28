@@ -1,0 +1,6 @@
+<a href="/logout">Log Out</a>
+<ul>
+  <% @timeline.each do |status| %>
+    <li><%=h status %></li>
+  <% end %>
+</ul>

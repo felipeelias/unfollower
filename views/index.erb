@@ -1,0 +1,10 @@
+<h1 id="hello">Your unfollowers</h1>
+
+<a href="/update">Update the unfollowers list</a>
+
+<h3>Total of <%= @followers.count %> alteration(s)</h3>
+<ul>
+<% @followers.each do |follower| %>
+  <li><%=h follower.followers.inspect %></li>
+<% end %>
+</ul>
