@@ -2,9 +2,9 @@
 
 <a href="/update">Update the unfollowers list</a>
 
-<h3>Total of <%= @followers.count %> alteration(s)</h3>
+<h3>Total of <%= @followers.size %> alteration(s)</h3>
 <ul>
 <% @followers.each do |follower| %>
-  <li><%=h follower.followers.inspect %></li>
+  <li><%=h Twitter.user(follower).screen_name rescue "user not found" %></li>
 <% end %>
 </ul>

@@ -61,13 +61,13 @@ get '/logout' do
 end
 
 get '/' do
-  @followers = store.histories
+  @followers = store.unfollowers
   erb :index
 end
 
 get '/update' do
   begin
-    ids = @client.follower_ids.inspect    
+    ids = @client.follower_ids
     followers_history = FollowersHistory.new(ids)
     store.add(followers_history)    
     
