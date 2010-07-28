@@ -1,3 +1,10 @@
 --- 
-token: 
-secret: 
+development:
+  consumer_token: 
+  consumer_secret: 
+  oauth_callback: 
+production:
+  consumer_token: 
+  consumer_secret: 
+  oauth_callback: 
+  
