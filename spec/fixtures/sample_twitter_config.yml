@@ -1,0 +1,9 @@
+--- 
+development:
+  consumer_token: DEV_TOKEN
+  consumer_secret: DEV_SECRET
+  oauth_callback: http://dev_callback
+production:
+  consumer_token: PROD_TOKEN
+  consumer_secret: PROD_SECRET
+  oauth_callback: http://prod_callback
