@@ -6,13 +6,13 @@ require 'lib/initializer'
 
 enable :sessions
 
-config = YAML.load(File.read("#{Application.root}/twitter.yml"))["#{Application.env}"]
+config = Application::TwitterConfig.new("#{Application.root}/twitter.yml", Application.env)
 store = FollowersStore.new
 
 before do
   session[:oauth] ||= {}
   
-  @oauth ||= Twitter::OAuth.new(config['consumer_token'], config['consumer_secret'])
+  @oauth ||= Twitter::OAuth.new(config.token, config.secret)
   
   if !session[:oauth][:access_token].nil? && !session[:oauth][:access_token_secret].nil?
     @oauth.authorize_from_access(session[:oauth][:access_token], session[:oauth][:access_token_secret])
@@ -27,14 +27,15 @@ end
 
 get '/timeline' do
   if @client
-    @client.user_timeline.map { |status| status.text }.inspect
+    @timeline = @client.user_timeline.map { |status| status.text }
+    erb :timeline
   else
-    '<a href="/request">Sign On</a>'
+    erb :auth
   end
 end
 
 get '/request' do
-  @request_token = @oauth.request_token(:oauth_callback => "http://#{request.host}:9393/auth")
+  @request_token = @oauth.request_token(:oauth_callback => config.callback)
   session[:oauth][:request_token] = @request_token.token
   session[:oauth][:request_token_secret] = @request_token.secret
 
@@ -52,6 +53,11 @@ get '/auth' do
   session[:oauth][:access_token_secret] = @oauth.access_token.secret
 
   redirect "/timeline"
+end
+
+get '/logout' do
+  session[:oauth] = {}
+  redirect '/timeline'
 end
 
 get '/' do
@@ -93,7 +99,15 @@ __END__
 </ul>
 
 @@auth
-<a href="<%= @auth_url %>">Sign-in with twitter</a>
+<a href="/request">Sign-in with twitter</a>
+
+@@timeline
+<a href="/logout">Log Out</a>
+<ul>
+  <% @timeline.each do |status| %>
+    <li><%=h status %></li>
+  <% end %>
+</ul>
 
 @@ error
 <h2>error happens</h2>
