@@ -6,7 +6,7 @@ require 'lib/initializer'
 
 enable :sessions
 
-config = Application::TwitterConfig.new("#{Application.root}/twitter.yml", Application.env)
+config = Application::TwitterConfig.new(Application.env)
 store = FollowersStore.new
 
 before do
