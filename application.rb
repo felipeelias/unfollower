@@ -8,7 +8,7 @@ enable :sessions
 
 Application.env = ENV['RACK_ENV']
 
-config = OpenStruct.new(:token => ENV['CONSUMER_TOKEN'], :secret => ENV['CONSUMER_SECRET'], callback => ENV['OAUTH_CALLBACK'])
+config = OpenStruct.new(:token => ENV['CONSUMER_TOKEN'], :secret => ENV['CONSUMER_SECRET'], :callback => ENV['OAUTH_CALLBACK'])
 store = FollowersStore.new
 
 before do
