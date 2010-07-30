@@ -1,3 +1,4 @@
+require 'ostruct'
 require 'sinatra'
 require 'twitter'
 require 'active_support/core_ext/string/output_safety'
@@ -5,7 +6,9 @@ require 'lib/initializer'
 
 enable :sessions
 
-config = Application::TwitterConfig.new(Application.env)
+Application.env = ENV['RACK_ENV']
+
+config = OpenStruct.new(:token => ENV['CONSUMER_TOKEN'], :secret => ENV['CONSUMER_SECRET'], callback => ENV['OAUTH_CALLBACK'])
 store = FollowersStore.new
 
 before do
