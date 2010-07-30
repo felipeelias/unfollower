@@ -1,4 +1,3 @@
-require 'rubygems'
 require 'sinatra'
 require 'twitter'
 require 'active_support/core_ext/string/output_safety'
