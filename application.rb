@@ -25,9 +25,8 @@ before do
 end
 
 helpers do
-  def h(string)
-    ERB::Util.html_escape(string)
-  end  
+  include Rack::Utils
+  alias_method :h, :escape_html
 end
 
 get '/request' do
