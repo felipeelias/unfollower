@@ -14,7 +14,7 @@ enable :sessions
 
 Application.env = ENV['RACK_ENV']
 
-config = Application::TwitterConfig.new(ENV['CONSUMER_TOKEN'], ENV['CONSUMER_SECRET'], ENV['OAUTH_CALLBACK'])
+config = OpenStruct.new(:token => ENV['CONSUMER_TOKEN'], :secret => ENV['CONSUMER_SECRET'], :callback => ENV['OAUTH_CALLBACK'])
 
 before do
   @store = FollowersStore.new
