@@ -39,7 +39,7 @@ get '/request' do
   session[:oauth][:request_token] = @request_token.token
   session[:oauth][:request_token_secret] = @request_token.secret
 
-  redirect "http://#{@request_token.authorize_url}"
+  redirect @request_token.authorize_url
 end
 
 get '/auth' do
