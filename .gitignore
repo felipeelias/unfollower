@@ -1,3 +1,5 @@
 .DS_Store
 db/**
 run_server
+.bundle
+Gemfile.lock
