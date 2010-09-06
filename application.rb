@@ -1,7 +1,6 @@
 require 'ostruct'
 require 'sinatra'
 require 'twitter'
-require 'active_support/core_ext/string/output_safety'
 require 'lib/initializer'
 require "lib/twitter_users_lookup"
 
