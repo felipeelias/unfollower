@@ -8,10 +8,11 @@ enable :sessions
 
 Application.env = ENV['RACK_ENV']
 
-config = OpenStruct.new(:token => ENV['CONSUMER_TOKEN'], :secret => ENV['CONSUMER_SECRET'], :callback => ENV['OAUTH_CALLBACK'])
-store = FollowersStore.new
+config = Application::TwitterConfig.new(ENV['CONSUMER_TOKEN'], ENV['CONSUMER_SECRET'], ENV['OAUTH_CALLBACK'])
 
 before do
+  @store = FollowersStore.new
+
   session[:oauth] ||= {}
   
   @oauth ||= Twitter::OAuth.new(config.token, config.secret)
@@ -32,7 +33,7 @@ get '/request' do
   session[:oauth][:request_token] = @request_token.token
   session[:oauth][:request_token_secret] = @request_token.secret
 
-  redirect @request_token.authorize_url
+  redirect "http://#{@request_token.authorize_url}"
 end
 
 get '/auth' do
@@ -54,7 +55,7 @@ get '/logout' do
 end
 
 get '/' do
-  @followers = store.unfollowers
+  @followers = @store.unfollowers.reverse
   erb :index
 end
 
@@ -62,7 +63,7 @@ get '/update' do
   begin
     ids = @client.follower_ids
     followers_history = FollowersHistory.new(ids)
-    store.add(followers_history)    
+    @store.add(followers_history)    
     
     redirect '/'
   rescue => @e
