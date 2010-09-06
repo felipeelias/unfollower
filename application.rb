@@ -4,6 +4,12 @@ require 'twitter'
 require 'active_support/core_ext/string/output_safety'
 require 'lib/initializer'
 
+class Twitter::Base
+  def users_lookup(user_ids)
+    perform_get("/1/users/lookup.json", :query => { :user_id => user_ids.join(',') })
+  end
+end
+
 enable :sessions
 
 Application.env = ENV['RACK_ENV']
@@ -55,7 +61,9 @@ get '/logout' do
 end
 
 get '/' do
-  @followers = @store.unfollowers.reverse
+  followers_ids = @store.unfollowers.reverse
+  followers = @client.users_lookup(followers_ids)
+  @followers = followers.sort_by { |follower| followers_ids.index(follower.id) }
   erb :index
 end
 
