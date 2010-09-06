@@ -24,8 +24,10 @@ before do
   
 end
 
-def h(string)
-  ERB::Util.html_escape(string)
+helpers do
+  def h(string)
+    ERB::Util.html_escape(string)
+  end  
 end
 
 get '/request' do
