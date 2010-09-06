@@ -3,12 +3,7 @@ require 'sinatra'
 require 'twitter'
 require 'active_support/core_ext/string/output_safety'
 require 'lib/initializer'
-
-class Twitter::Base
-  def users_lookup(user_ids)
-    perform_get("/1/users/lookup.json", :query => { :user_id => user_ids.join(',') })
-  end
-end
+require "lib/twitter_users_lookup"
 
 enable :sessions
 
