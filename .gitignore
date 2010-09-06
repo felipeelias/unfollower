@@ -1,5 +1,3 @@
-twitter.yml
 .DS_Store
-dump/**
 db/**
 run_server
