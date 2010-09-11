@@ -9,8 +9,6 @@ set :run, false
 set :raise_errors, true
 set :logging, false
 
-Application.env = 'test'
-
 Spec::Runner.configure do |config|
   include Application::TestHelpers
 end
