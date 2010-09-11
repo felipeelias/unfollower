@@ -3,8 +3,9 @@
     <title>Unfollower Tracker</title>
   </head>
   <body>
-    <a href="request"><img src="twitter-sign-in.png" alt="Sign in with Twitter"/></a>
-
+    <% if logged_in? %>
+      <a href="logout">Logout</a>
+    <% end %>
     <%= yield %>
   </body>
 </html>
