@@ -73,6 +73,8 @@ get '/' do
   followers_ids = @store.unfollowers.reverse
   followers = @client.users_lookup(followers_ids)
   @followers = followers.sort_by { |follower| followers_ids.index(follower.id) }
+  
+  @user_info = @client.verify_credentials
   erb :index
 end
 

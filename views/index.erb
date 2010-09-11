@@ -1,11 +1,19 @@
-<h1 id="hello">Your unfollowers</h1>
+<h1 id="you">You</h1>
 
-<a href="/update">Update the unfollowers list</a>
+<div class="user_info">
+  <img src="<%= @user_info.profile_image_url %>" alt="<%= @user_info.name %>" />
+  <span class="screen_name"><%= @user_info.screen_name %></span> / <span clas="name"><%= @user_info.name %></span>
+  <a href="/update">Update the unfollowers list</a>
+</div>
 
-<h3>Total of <%= @followers.size %> alteration(s)</h3>
+<h1 id="your-unfollowers">Your unfollowers</h1>
+
+<h3>Total of <%= @followers.size %> unfollowers</h3>
 
 <ul>
 <% @followers.each do |follower| %>
   <li><%=h follower.screen_name %></li>
 <% end %>
 </ul>
+
+<%= @user_info.inspect %>
