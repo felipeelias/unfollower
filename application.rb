@@ -27,6 +27,14 @@ end
 helpers do
   include Rack::Utils
   alias_method :h, :escape_html
+  
+  def logged_in?
+    !session[:oauth].empty?
+  end
+end
+
+def login_required
+  redirect '/login' if not logged_in?
 end
 
 get '/request' do
@@ -50,12 +58,18 @@ get '/auth' do
   redirect "/"
 end
 
+get '/login' do
+  erb :login
+end
+
 get '/logout' do
   session[:oauth] = {}
   redirect '/'
 end
 
 get '/' do
+  login_required
+  
   followers_ids = @store.unfollowers.reverse
   followers = @client.users_lookup(followers_ids)
   @followers = followers.sort_by { |follower| followers_ids.index(follower.id) }
