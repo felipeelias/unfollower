@@ -3,7 +3,7 @@ require 'sinatra'
 require 'twitter'
 require 'lib/initializer'
 require "lib/twitter_users_lookup"
-require 'mongo'
+require 'mongo_conf'
 
 enable :sessions
 
