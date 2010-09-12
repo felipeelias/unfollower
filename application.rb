@@ -1,5 +1,4 @@
 require 'boot'
-require 'ostruct'
 require 'sinatra'
 require 'twitter'
 require 'lib/initializer'
@@ -9,14 +8,12 @@ MongoMapper.connect(Sinatra::Base.environment)
 
 enable :sessions
 
-config = OpenStruct.new(:token => ENV['CONSUMER_TOKEN'], :secret => ENV['CONSUMER_SECRET'], :callback => ENV['OAUTH_CALLBACK'])
-
 before do
   @store = FollowersStore.new
 
   session[:oauth] ||= {}
   
-  @oauth ||= Twitter::OAuth.new(config.token, config.secret)
+  @oauth ||= Twitter::OAuth.new(Config.token, Config.secret)
   
   if !session[:oauth][:access_token].nil? && !session[:oauth][:access_token_secret].nil?
     @oauth.authorize_from_access(session[:oauth][:access_token], session[:oauth][:access_token_secret])
@@ -39,7 +36,7 @@ def login_required
 end
 
 get '/request' do
-  @request_token = @oauth.request_token(:oauth_callback => config.callback)
+  @request_token = @oauth.request_token(:oauth_callback => Config.callback)
   session[:oauth][:request_token] = @request_token.token
   session[:oauth][:request_token_secret] = @request_token.secret
 
