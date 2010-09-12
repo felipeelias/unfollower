@@ -1,3 +1,5 @@
+--colour
 --format specdoc
---color
+--loadby mtime
+--reverse
 --debugger

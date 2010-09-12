@@ -1,12 +1,13 @@
+require 'boot'
 require 'ostruct'
 require 'sinatra'
 require 'twitter'
 require 'lib/initializer'
 require "lib/twitter_users_lookup"
 
-enable :sessions
+MongoMapper.connect(Sinatra::Base.environment)
 
-Application.env = ENV['RACK_ENV']
+enable :sessions
 
 config = OpenStruct.new(:token => ENV['CONSUMER_TOKEN'], :secret => ENV['CONSUMER_SECRET'], :callback => ENV['OAUTH_CALLBACK'])
 

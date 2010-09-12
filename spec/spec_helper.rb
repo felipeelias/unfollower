@@ -1,14 +1,26 @@
+require 'boot'
 require 'sinatra'
 require 'rack/test'
+require 'database_cleaner'
 
-require File.expand_path(File.dirname(__FILE__) + '/../lib/initializer')
+Sinatra::Base.set :environment, :test
+Sinatra::Base.set :run, false
+Sinatra::Base.set :raise_errors, true
+Sinatra::Base.set :logging, false
 
-# set test environment
-set :environment, :test
-set :run, false
-set :raise_errors, true
-set :logging, false
+require File.expand_path(File.dirname(__FILE__) + '/../application')
+require 'lib/initializer'
 
 Spec::Runner.configure do |config|
+
   include Application::TestHelpers
+
+  config.before(:suite) do
+    DatabaseCleaner.strategy = :truncation
+  end
+
+  config.after(:each) do
+    DatabaseCleaner.clean
+  end
+
 end
