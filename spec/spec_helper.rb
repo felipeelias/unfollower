@@ -11,6 +11,8 @@ Sinatra::Base.set :logging, false
 require File.expand_path(File.dirname(__FILE__) + '/../application')
 require 'lib/initializer'
 
+Application.env = "test"
+
 Spec::Runner.configure do |config|
 
   include Application::TestHelpers
