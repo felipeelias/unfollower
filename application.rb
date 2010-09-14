@@ -1,8 +1,7 @@
 require 'boot'
 require 'sinatra'
 require 'twitter'
-require 'lib/initializer'
-require "lib/twitter_users_lookup"
+require 'lib/twitter_users_lookup'
 
 MongoMapper.connect(Sinatra::Base.environment)
 

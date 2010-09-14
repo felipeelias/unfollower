@@ -10,11 +10,7 @@ Sinatra::Base.set :logging, false
 
 require File.expand_path(File.dirname(__FILE__) + '/../application')
 
-Application.env = "test"
-
 Spec::Runner.configure do |config|
-
-  include Application::TestHelpers
 
   config.before(:suite) do
     DatabaseCleaner.strategy = :truncation
