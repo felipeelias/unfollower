@@ -5,8 +5,12 @@ class User
   key :last_followers, Array
   key :unfollowers, Array
   
-  def check_unfollowers(new_list)
-    list = last_followers - new_list
-    unfollowers.unshift(*list)
+  def check_unfollowers!(new_list)
+    list = self.last_followers - new_list
+    
+    self.last_followers = new_list
+    self.unfollowers.unshift(*list)
+    
+    self.save!
   end
 end
