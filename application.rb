@@ -93,6 +93,8 @@ get '/' do
 end
 
 get '/update' do
+  login_required
+  
   ids = @twitter.follower_ids
   current_user.check_unfollowers!(ids)
   
