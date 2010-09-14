@@ -9,15 +9,13 @@ MongoMapper.connect(Sinatra::Base.environment)
 enable :sessions
 
 before do
-  @store = FollowersStore.new
-
   session[:oauth] ||= {}
   
   @oauth ||= Twitter::OAuth.new(Config.token, Config.secret)
   
   if !session[:oauth][:access_token].nil? && !session[:oauth][:access_token_secret].nil?
     @oauth.authorize_from_access(session[:oauth][:access_token], session[:oauth][:access_token_secret])
-    @client = Twitter::Base.new(@oauth)
+    @twitter = Twitter::Base.new(@oauth)
   end
   
 end
@@ -27,7 +25,15 @@ helpers do
   alias_method :h, :escape_html
   
   def logged_in?
-    !session[:oauth].empty?
+    !session[:oauth].empty? && session[:oauth][:access_token] && session[:oauth][:access_token_secret]
+  end
+
+  def user_info
+    @user_info ||= @twitter.verify_credentials
+  end
+  
+  def current_user
+    @current_user ||= User.find_or_create_by_twitter_id(user_info.id)
   end
 end
 
@@ -35,25 +41,31 @@ def login_required
   redirect '/login' if not logged_in?
 end
 
-get '/request' do
-  @request_token = @oauth.request_token(:oauth_callback => Config.callback)
-  session[:oauth][:request_token] = @request_token.token
-  session[:oauth][:request_token_secret] = @request_token.secret
+def authorized?
+  params[:oauth_verifier] && !params[:denied]
+end
 
-  redirect @request_token.authorize_url
+get '/request' do
+  request_token = @oauth.request_token(:oauth_callback => Config.callback)
+  session[:oauth][:request_token] = request_token.token
+  session[:oauth][:request_token_secret] = request_token.secret
+
+  redirect request_token.authorize_url
 end
 
 get '/auth' do
-  request_token = session[:oauth][:request_token]
-  request_token_secret = session[:oauth][:request_token_secret]
-  oauth_verifier = params[:oauth_verifier]
-  
-  @oauth.authorize_from_request(request_token, request_token_secret, oauth_verifier)
+  if authorized?
+    @oauth.authorize_from_request(session[:oauth][:request_token], 
+                                  session[:oauth][:request_token_secret], 
+                                  params[:oauth_verifier])
 
-  session[:oauth][:access_token] = @oauth.access_token.token
-  session[:oauth][:access_token_secret] = @oauth.access_token.secret
-
-  redirect "/"
+    session[:oauth][:access_token] = @oauth.access_token.token
+    session[:oauth][:access_token_secret] = @oauth.access_token.secret
+    
+    redirect "/"
+  else
+    redirect "/error"
+  end
 end
 
 get '/login' do
@@ -68,22 +80,21 @@ end
 get '/' do
   login_required
   
-  followers_ids = @store.unfollowers.reverse
-  followers = @client.users_lookup(followers_ids)
-  @followers = followers.sort_by { |follower| followers_ids.index(follower.id) }
+  @followers = []
   
-  @user_info = @client.verify_credentials
+  followers_ids = current_user.unfollowers
+  
+  if !followers_ids.empty?
+    followers = @twitter.users_lookup(followers_ids)
+    @followers = followers.sort_by { |follower| followers_ids.index(follower.id) }    
+  end
+  
   erb :index
 end
 
 get '/update' do
-  begin
-    ids = @client.follower_ids
-    followers_history = FollowersHistory.new(ids)
-    @store.add(followers_history)    
-    
-    redirect '/'
-  rescue => @e
-    erb :error
-  end
+  ids = @twitter.follower_ids
+  current_user.check_unfollowers!(ids)
+  
+  redirect '/'
 end
