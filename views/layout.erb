@@ -1,11 +1,15 @@
 <html>
   <head>
     <title>Unfollower Tracker</title>
+    <link rel="stylesheet" href="stylesheets/reset.css" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="stylesheets/application.css" type="text/css" media="screen"/>
   </head>
   <body>
-    <% if logged_in? %>
-      <a href="logout">Logout</a>
-    <% end %>
-    <%= yield %>
+    <div id="main">
+      <% if logged_in? %>
+        <a href="logout">Logout</a>
+      <% end %>
+      <%= yield %>
+    </div>
   </body>
 </html>
