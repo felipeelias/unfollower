@@ -1,17 +1,25 @@
 <h1 id="you">You</h1>
 
 <div class="user_info">
-  <img src="<%= user_info.profile_image_url %>" alt="<%= user_info.name %>" />
-  <span class="screen_name"><%= user_info.screen_name %></span> / <span clas="name"><%= user_info.name %></span>
-  <a href="/update">Update the unfollowers list</a>
+  <img class="profile_image" src="<%= user_info.profile_image_url %>" alt="<%= user_info.name %>" />
+  <div class="profile">
+    <a class="screen_name" href="http://twitter.com/<%= user_info.screen_name %>"><%= user_info.screen_name %></a>
+    <br/> 
+    <span class="name"><%= user_info.name %></span>    
+  </div>
 </div>
 
 <h1 id="your-unfollowers">Your unfollowers</h1>
 
-<h3>Total of <%= @followers.size %> unfollowers</h3>
+<h2>Total of <%= @followers.size %> unfollowers (<a href="/update">Update</a>)</h2>
 
-<ul>
 <% @followers.each do |follower| %>
-  <li><a href="http://twitter.com/<%=h follower.screen_name %>"><%=h follower.screen_name %></a></li>
+  <div class="user_info">
+    <img class="profile_image" src="<%= follower.profile_image_url %>" alt="<%= follower.name %>" />
+    <div class="profile">
+      <a class="screen_name" href="http://twitter.com/<%= follower.screen_name %>"><%= follower.screen_name %></a>
+      <br/> 
+      <span class="name"><%= follower.name %></span>    
+    </div>
+  </div>
 <% end %>
-</ul>
