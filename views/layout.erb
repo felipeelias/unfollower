@@ -7,7 +7,7 @@
   <body>
     <div id="main">
       <% if logged_in? %>
-        <a href="logout">Logout</a>
+        <a id="logout" href="logout">Logout</a>
       <% end %>
       <%= yield %>
     </div>

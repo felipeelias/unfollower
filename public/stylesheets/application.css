@@ -18,3 +18,8 @@ p {
   width: 960px;
   background-color: #FFF;
 }
+
+a#logout {
+  display: block;
+  float: right;
+}
