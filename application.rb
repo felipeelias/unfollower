@@ -5,7 +5,7 @@ require 'lib/twitter_users_lookup'
 
 MongoMapper.connect(Sinatra::Base.environment)
 
-enable :sessions
+enable :sessions unless Sinatra::Base.environment == :test
 
 before do
   session[:oauth] ||= {}
