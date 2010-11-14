@@ -10,11 +10,9 @@ enable :sessions unless Sinatra::Base.environment == :test
 before do
   session[:oauth] ||= {}
   
-  @oauth ||= Twitter::OAuth.new(APP_CONFIG[:token], APP_CONFIG[:secret])
-  
   if !session[:oauth][:access_token].nil? && !session[:oauth][:access_token_secret].nil?
-    @oauth.authorize_from_access(session[:oauth][:access_token], session[:oauth][:access_token_secret])
-    @twitter = Twitter::Base.new(@oauth)
+    oauth.authorize_from_access(session[:oauth][:access_token], session[:oauth][:access_token_secret])
+    @twitter = Twitter::Base.new(oauth)
   end
   
 end
@@ -36,6 +34,10 @@ helpers do
   end
 end
 
+def oauth
+  @oauth ||= Twitter::OAuth.new(APP_CONFIG[:token], APP_CONFIG[:secret])
+end
+
 def login_required
   redirect '/login' if not logged_in?
 end
@@ -45,7 +47,7 @@ def authorized?
 end
 
 get '/request' do
-  request_token = @oauth.request_token(:oauth_callback => APP_CONFIG[:callback])
+  request_token = oauth.request_token(:oauth_callback => APP_CONFIG[:callback])
   session[:oauth][:request_token] = request_token.token
   session[:oauth][:request_token_secret] = request_token.secret
 
@@ -54,12 +56,12 @@ end
 
 get '/auth' do
   if authorized?
-    @oauth.authorize_from_request(session[:oauth][:request_token], 
-                                  session[:oauth][:request_token_secret], 
-                                  params[:oauth_verifier])
+    oauth.authorize_from_request(session[:oauth][:request_token], 
+                                 session[:oauth][:request_token_secret], 
+                                 params[:oauth_verifier])
 
-    session[:oauth][:access_token] = @oauth.access_token.token
-    session[:oauth][:access_token_secret] = @oauth.access_token.secret
+    session[:oauth][:access_token] = oauth.access_token.token
+    session[:oauth][:access_token_secret] = oauth.access_token.secret
     
     redirect "/"
   else
