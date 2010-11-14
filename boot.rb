@@ -1,7 +1,11 @@
 require 'bundler/setup'
 require 'ostruct'
 
-Config = OpenStruct.new(:token => ENV['CONSUMER_TOKEN'], :secret => ENV['CONSUMER_SECRET'], :callback => ENV['OAUTH_CALLBACK'])
+APP_CONFIG = {
+  :token => ENV['CONSUMER_TOKEN'], 
+  :secret => ENV['CONSUMER_SECRET'], 
+  :callback => ENV['OAUTH_CALLBACK']
+}
 
 require 'mongo_mapper'
 

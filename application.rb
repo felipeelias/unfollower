@@ -10,7 +10,7 @@ enable :sessions unless Sinatra::Base.environment == :test
 before do
   session[:oauth] ||= {}
   
-  @oauth ||= Twitter::OAuth.new(Config.token, Config.secret)
+  @oauth ||= Twitter::OAuth.new(APP_CONFIG[:token], APP_CONFIG[:secret])
   
   if !session[:oauth][:access_token].nil? && !session[:oauth][:access_token_secret].nil?
     @oauth.authorize_from_access(session[:oauth][:access_token], session[:oauth][:access_token_secret])
@@ -45,7 +45,7 @@ def authorized?
 end
 
 get '/request' do
-  request_token = @oauth.request_token(:oauth_callback => Config.callback)
+  request_token = @oauth.request_token(:oauth_callback => APP_CONFIG[:callback])
   session[:oauth][:request_token] = request_token.token
   session[:oauth][:request_token_secret] = request_token.secret
 
