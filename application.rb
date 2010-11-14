@@ -53,13 +53,10 @@ end
 
 get '/auth' do
   if authorized?
-    oauth.authorize_from_request(session[:request_token], 
-                                 session[:request_secret], 
-                                 params[:oauth_verifier])
-
+    oauth.authorize_from_request(session[:request_token], session[:request_secret], params[:oauth_verifier])
+    
     session[:access_token] = oauth.access_token.token
     session[:access_secret] = oauth.access_token.secret
-    
     session[:current_user] = current_user.id
     
     redirect "/"
