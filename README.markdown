@@ -20,3 +20,4 @@ TODO
 
 1. Fazer autorização pela web
 2. Verificar unfollowers de tempos em tempos
+3. Mostrar status (n de followers/following)
