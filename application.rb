@@ -8,13 +8,10 @@ MongoMapper.connect(Sinatra::Base.environment)
 enable :sessions unless Sinatra::Base.environment == :test
 
 before do
-  session[:oauth] ||= {}
-  
-  if !session[:oauth][:access_token].nil? && !session[:oauth][:access_token_secret].nil?
-    oauth.authorize_from_access(session[:oauth][:access_token], session[:oauth][:access_token_secret])
+  if !session[:access_token].nil? && !session[:access_secret].nil?
+    oauth.authorize_from_access(session[:access_token], session[:access_secret])
     @twitter = Twitter::Base.new(oauth)
   end
-  
 end
 
 helpers do
@@ -22,7 +19,7 @@ helpers do
   alias_method :h, :escape_html
   
   def logged_in?
-    !session[:oauth].empty? && session[:oauth][:access_token] && session[:oauth][:access_token_secret]
+    session[:current_user]
   end
 
   def user_info
@@ -48,20 +45,22 @@ end
 
 get '/request' do
   request_token = oauth.request_token(:oauth_callback => APP_CONFIG[:callback])
-  session[:oauth][:request_token] = request_token.token
-  session[:oauth][:request_token_secret] = request_token.secret
+  session[:request_token] = request_token.token
+  session[:request_secret] = request_token.secret
 
   redirect request_token.authorize_url
 end
 
 get '/auth' do
   if authorized?
-    oauth.authorize_from_request(session[:oauth][:request_token], 
-                                 session[:oauth][:request_token_secret], 
+    oauth.authorize_from_request(session[:request_token], 
+                                 session[:request_secret], 
                                  params[:oauth_verifier])
 
-    session[:oauth][:access_token] = oauth.access_token.token
-    session[:oauth][:access_token_secret] = oauth.access_token.secret
+    session[:access_token] = oauth.access_token.token
+    session[:access_secret] = oauth.access_token.secret
+    
+    session[:current_user] = current_user.id
     
     redirect "/"
   else
@@ -74,7 +73,7 @@ get '/login' do
 end
 
 get '/logout' do
-  session[:oauth] = {}
+  session[:current_user] = nil
   redirect '/'
 end
 
