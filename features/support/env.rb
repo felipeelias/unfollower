@@ -8,8 +8,6 @@ Sinatra::Base.set :logging, false
 
 require File.join(File.dirname(__FILE__), '..', '..', 'application.rb')
 
-Application.env = "test"
-
 require 'capybara'
 require 'capybara/cucumber'
 require 'spec'
