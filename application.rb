@@ -7,13 +7,6 @@ MongoMapper.connect(Sinatra::Base.environment)
 
 enable :sessions unless Sinatra::Base.environment == :test
 
-before do
-  if !session[:access_token].nil? && !session[:access_secret].nil?
-    oauth.authorize_from_access(session[:access_token], session[:access_secret])
-    @twitter = Twitter::Base.new(oauth)
-  end
-end
-
 helpers do
   include Rack::Utils
   alias_method :h, :escape_html
@@ -23,7 +16,7 @@ helpers do
   end
 
   def user_info
-    @user_info ||= @twitter.verify_credentials
+    @user_info ||= client.verify_credentials
   end
   
   def current_user
@@ -33,6 +26,11 @@ end
 
 def oauth
   @oauth ||= Twitter::OAuth.new(APP_CONFIG[:token], APP_CONFIG[:secret])
+end
+
+def client
+  oauth.authorize_from_access(session[:access_token], session[:access_secret])
+  Twitter::Base.new(oauth)
 end
 
 def login_required
@@ -82,7 +80,7 @@ get '/' do
   followers_ids = current_user.unfollowers
   
   if !followers_ids.empty?
-    followers = @twitter.users_lookup(followers_ids)
+    followers = client.users_lookup(followers_ids)
     @followers = followers.sort_by { |follower| followers_ids.index(follower.id) }    
   end
   
@@ -92,7 +90,7 @@ end
 get '/update' do
   login_required
   
-  ids = @twitter.follower_ids
+  ids = client.follower_ids
   current_user.check_unfollowers!(ids)
   
   redirect '/'
