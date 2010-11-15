@@ -1,5 +1,4 @@
 require 'bundler/setup'
-require 'ostruct'
 
 APP_CONFIG = {
   :token => ENV['CONSUMER_TOKEN'], 
