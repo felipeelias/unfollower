@@ -1,5 +1,6 @@
 --colour
---format specdoc
+--require fuubar
+--format Fuubar
 --loadby mtime
 --reverse
 --debugger
