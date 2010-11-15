@@ -1,6 +1,4 @@
---colour
 --require fuubar
 --format Fuubar
---loadby mtime
---reverse
---debugger
+--colour
+--debug
