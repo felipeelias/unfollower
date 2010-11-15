@@ -2,6 +2,7 @@ require 'boot'
 require 'sinatra'
 require 'rack/test'
 require 'database_cleaner'
+require 'rspec'
 
 Sinatra::Base.set :environment, :test
 Sinatra::Base.set :run, false
@@ -10,7 +11,7 @@ Sinatra::Base.set :logging, false
 
 require File.expand_path(File.dirname(__FILE__) + '/../application')
 
-Spec::Runner.configure do |config|
+Rspec.configure do |config|
 
   config.before(:suite) do
     DatabaseCleaner.strategy = :truncation
