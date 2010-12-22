@@ -85,7 +85,7 @@ get '/' do
   followers_ids = current_user.unfollowers
   
   if !followers_ids.empty?
-    followers = client.users_lookup(followers_ids)
+    followers = client.users(followers_ids)
     @followers = followers.sort_by { |follower| followers_ids.index(follower.id) }    
   end
   
