@@ -47,7 +47,7 @@ def authorized?
 end
 
 get '/request' do
-  request_token = oauth.get_request_token(:oauth_callback => APP_CONFIG[:callback])
+  request_token = oauth.get_request_token(:callback_url => APP_CONFIG[:callback])
   session[:request_token] = request_token.token
   session[:request_secret] = request_token.secret
 
