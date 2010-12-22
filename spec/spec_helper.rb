@@ -3,11 +3,15 @@ require 'sinatra'
 require 'rack/test'
 require 'database_cleaner'
 require 'rspec'
+require 'methodize/hash'
 
-Sinatra::Base.set :environment, :test
-Sinatra::Base.set :run, false
-Sinatra::Base.set :raise_errors, true
-Sinatra::Base.set :logging, false
+configure do
+  set :environment, :test
+  set :run, false
+  set :raise_errors, true
+  set :logging, false
+  set :views, File.dirname(__FILE__) + '/../views'
+end
 
 require File.expand_path(File.dirname(__FILE__) + '/../application')
 
