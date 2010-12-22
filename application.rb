@@ -95,7 +95,7 @@ end
 get '/update' do
   login_required
   
-  ids = client.follower_ids
+  ids = client.follower_ids.ids
   current_user.check_unfollowers!(ids)
   
   redirect '/'
