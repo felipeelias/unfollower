@@ -2,6 +2,7 @@ source :rubygems
 
 gem "sinatra"
 gem "twitter"
+gem "oauth"
 
 gem "mongo_mapper"
 gem "i18n"
@@ -17,4 +18,5 @@ group :test do
   
   gem "cucumber"
   gem "capybara"
+  gem "methodize"
 end
