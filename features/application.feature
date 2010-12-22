@@ -6,4 +6,4 @@ Feature: Application
   Scenario: Initial application
     Given I am on "the home page"
     When I go to "the home page"
-    Then I should see "Hello World" within "span"
+    Then I should see "Unfollower Tracker" within "h1"

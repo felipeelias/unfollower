@@ -1,16 +1,18 @@
 require 'boot'
 require 'sinatra'
 
-Sinatra::Base.set :environment, :test
-Sinatra::Base.set :run, false
-Sinatra::Base.set :raise_errors, true
-Sinatra::Base.set :logging, false
+configure do
+  set :environment, :test
+  set :run, false
+  set :raise_errors, true
+  set :logging, false
+  set :views, "#{File.dirname(__FILE__)}/../../views"
+end
 
 require File.join(File.dirname(__FILE__), '..', '..', 'application.rb')
 
-require 'capybara'
+require 'rspec/expectations'
 require 'capybara/cucumber'
-require 'spec'
 
 Capybara.app = Sinatra::Application
 Capybara.default_selector = :css
@@ -19,13 +21,3 @@ require 'database_cleaner'
 require 'database_cleaner/cucumber'
 
 DatabaseCleaner.strategy = :truncation
-
-class ApplicationWorld
-  include Capybara
-  include Spec::Expectations
-  include Spec::Matchers
-end
-
-World do
-  ApplicationWorld.new
-end
