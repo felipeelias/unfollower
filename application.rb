@@ -1,7 +1,7 @@
 require 'boot'
 require 'sinatra'
 require 'twitter'
-require 'lib/twitter_users_lookup'
+require 'oauth'
 
 MongoMapper.connect(Sinatra::Base.environment)
 
@@ -12,7 +12,7 @@ helpers do
   alias_method :h, :escape_html
   
   def logged_in?
-    session[:current_user]
+    session[:access_token] && session[:access_secret]
   end
 
   def user_info
@@ -25,12 +25,17 @@ helpers do
 end
 
 def oauth
-  @oauth ||= Twitter::OAuth.new(APP_CONFIG[:token], APP_CONFIG[:secret])
+  @oauth ||= OAuth::Consumer.new(ENV['CONSUMER_TOKEN'], ENV['CONSUMER_SECRET'], :site => 'http://api.twitter.com', :request_endpoint => 'http://api.twitter.com', :sign_in => true)
 end
 
 def client
-  oauth.authorize_from_access(session[:access_token], session[:access_secret])
-  Twitter::Base.new(oauth)
+  Twitter.configure do |c|
+    c.consumer_key = ENV['CONSUMER_TOKEN']
+    c.consumer_secret = ENV['CONSUMER_SECRET']
+    c.oauth_token = session[:access_token]
+    c.oauth_token_secret = session[:access_secret]
+  end
+  @client ||= Twitter::Client.new
 end
 
 def login_required
@@ -38,11 +43,11 @@ def login_required
 end
 
 def authorized?
-  params[:oauth_verifier] && !params[:denied]
+  params[:oauth_verifier]
 end
 
 get '/request' do
-  request_token = oauth.request_token(:oauth_callback => APP_CONFIG[:callback])
+  request_token = oauth.get_request_token(:oauth_callback => APP_CONFIG[:callback])
   session[:request_token] = request_token.token
   session[:request_secret] = request_token.secret
 
@@ -51,15 +56,15 @@ end
 
 get '/auth' do
   if authorized?
-    oauth.authorize_from_request(session[:request_token], session[:request_secret], params[:oauth_verifier])
-    
-    session[:access_token] = oauth.access_token.token
-    session[:access_secret] = oauth.access_token.secret
-    session[:current_user] = current_user.id
+    request_token = OAuth::RequestToken.new(oauth, session[:request_token], session[:request_secret])
+    access_token = request_token.get_access_token(:oauth_verifier => params[:oauth_verifier])
+
+    session[:access_token] = access_token.token
+    session[:access_secret] = access_token.secret
     
     redirect "/"
   else
-    redirect "/error"
+    erb "/error"
   end
 end
 
