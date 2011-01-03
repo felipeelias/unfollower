@@ -5,7 +5,7 @@ require 'oauth'
 
 MongoMapper.connect(Sinatra::Base.environment)
 
-enable :sessions unless Sinatra::Base.environment == :test
+enable :sessions
 
 helpers do
   include Rack::Utils
