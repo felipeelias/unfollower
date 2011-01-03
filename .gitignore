@@ -2,4 +2,3 @@
 db/**
 run_server
 .bundle
-Gemfile.lock
