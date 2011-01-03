@@ -3,7 +3,9 @@ require 'sinatra'
 require 'rack/test'
 require 'database_cleaner'
 require 'rspec'
-require 'methodize/hash'
+require 'webmock/rspec'
+
+Dir['spec/support/*.rb'].each { |f| require f }
 
 configure do
   set :environment, :test
@@ -16,7 +18,9 @@ end
 require File.expand_path(File.dirname(__FILE__) + '/../application')
 
 Rspec.configure do |config|
-
+  
+  include SessionHelper
+  
   config.before(:suite) do
     DatabaseCleaner.strategy = :truncation
   end
