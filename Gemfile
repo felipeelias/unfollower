@@ -18,5 +18,5 @@ group :test do
   
   gem "cucumber"
   gem "capybara"
-  gem "methodize"
+  gem "webmock"
 end
