@@ -1,23 +1,29 @@
-Unfollower
+[Unfollower Tracker](http://unfollower.heroku.com)
 ----------
+
+Link da app rodando no heroku: [http://unfollower.heroku.com](http://unfollower.heroku.com)
 
 Para rodar a "app":
 
-Copie o exemplo de configuração do twitter (você precisará de uma [app no twitter](http://dev.twitter.com/apps)):
+- Crie sua app no Twitter [aqui](http://dev.twitter.com/)
+- `bundle install`
 
-    cp twitter.yml.example twitter.yml
+Configure algumas env vars com os tokens da sua app no Twitter:
 
-Configure no arquivo twitter.yml os tokens da sua app.
+    export CONSUMER_TOKEN=sua-app-token
+    export CONSUMER_SECRET=sua-app-secret
+    export OAUTH_CALLBACK=http://localhost:9292/auth
 
-Rode a aplicação:
+Run!
 
-    shotgun application.rb
+    shotgun config.ru -p 9292
 
-Acesse [http://localhost:9393/](http://localhost:9393/)
+Acesse [http://localhost:9292/](http://localhost:9292/)
 
 TODO
 ----
 
-1. Fazer autorização pela web
-2. Verificar unfollowers de tempos em tempos
-3. Mostrar status (n de followers/following)
+1. Cron task p/ verificar unfollowers de tempos em tempos
+2. Mostrar status (n de followers/following)
+3. Mostrar pessoas que vc segue que não te seguem
+4. Notificar por email novos unfollowers
