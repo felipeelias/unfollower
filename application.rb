@@ -73,7 +73,10 @@ get '/login' do
 end
 
 get '/logout' do
-  session[:current_user] = nil
+  [:access_token, :access_secret].each do |sess|
+    session[sess] = nil
+  end
+
   redirect '/'
 end
 

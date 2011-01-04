@@ -57,4 +57,17 @@ describe "Application" do
       last_response.should_not be_redirect
     end
   end
+  
+  describe "/logout" do
+    before do
+      session[:access_token] = 'token'
+      session[:access_secret] = 'secret'
+    end
+    
+    it "should logout the user" do
+      get '/logout'
+      session[:access_token].should be_nil
+      session[:access_secret].should be_nil
+    end
+  end
 end
