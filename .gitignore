@@ -1,4 +1,5 @@
 .DS_Store
 db/**
 run_server
+run
 .bundle
