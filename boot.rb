@@ -14,4 +14,4 @@ MongoMapper.config = {
   :production   => {"uri" => ENV["MONGOHQ_URL"]}
 }
 
-Dir["models/*.rb"].each {|f| require f}
+Dir["models/*.rb"].each {|f| require_relative f}

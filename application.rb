@@ -1,4 +1,4 @@
-require 'boot'
+require_relative 'boot'
 require 'sinatra'
 require 'twitter'
 require 'oauth'
